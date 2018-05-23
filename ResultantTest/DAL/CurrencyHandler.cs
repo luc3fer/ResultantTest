@@ -9,7 +9,9 @@ namespace ResultantTest.DAL
 {
     public class CurrencyHandler : ICurrencyHandler
     {
-        public List<CurrencyEntity> GetCurrencyEntity()
+        private const string _url = "http://phisix-api3.appspot.com/stocks.json";
+
+        public IEnumerable<CurrencyEntity> GetCurrencyEntity()
         {
             using (var handler = new HttpClientHandler { UseDefaultCredentials = true })
             {
@@ -17,29 +19,23 @@ namespace ResultantTest.DAL
                 {
                     client.DefaultRequestHeaders.Accept.Clear();
 
-                    var response = client.GetAsync("http://phisix-api3.appspot.com/stocks.json").Result;
+                    var response = client.GetAsync(_url).Result;
 
-                    List<CurrencyEntity> CurrencyEntities = new List<CurrencyEntity>();
                     if (response.IsSuccessStatusCode)
                     {
                         var result = response.Content.ReadAsAsync<StockInfo>().Result;
                         foreach (var stock in result?.Stocks)
                         {
-                            CurrencyEntities.Add(new CurrencyEntity
+                            yield return new CurrencyEntity
                             {
                                 Name = stock.Name,
                                 Volume = stock.Volume,
-                                Amount = stock.Price?.Amount,
-                                PercentChange = stock.PercentChange
-                            });
+                                Amount = stock.Price?.Amount.ToString("F"),
+                            };
                         }
                     }
                     else
-                    {
-                        //throw new HttpException((int)response.StatusCode, response.Content.ReadAsStringAsync().Result);
-                    }
-
-                    return CurrencyEntities;
+                        throw new Exception(response.Content.ToString());
                 }
             }
         }

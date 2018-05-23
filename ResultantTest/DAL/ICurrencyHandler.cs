@@ -8,6 +8,6 @@ namespace ResultantTest.DAL
 {
     public interface ICurrencyHandler
     {
-        List<CurrencyEntity> GetCurrencyEntity();
+        IEnumerable<CurrencyEntity> GetCurrencyEntity();
     }
 }

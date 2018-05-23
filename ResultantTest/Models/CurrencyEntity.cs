@@ -9,10 +9,8 @@ namespace ResultantTest.Models
     {
         public string Name { get; set; }
 
-        public float? Amount { get; set; }
+        public string Amount { get; set; }
 
         public int Volume { get; set; }
-
-        public float PercentChange { get; set; }
     }
 }

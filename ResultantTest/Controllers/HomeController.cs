@@ -23,7 +23,7 @@ namespace ResultantTest.Controllers
             return View(CurrenciesList());
         }
 
-        public List<CurrencyEntity> CurrenciesList()
+        public IEnumerable<CurrencyEntity> CurrenciesList()
         {
             ViewData["Message"] = "Your application description page.";
 
